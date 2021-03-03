@@ -3,7 +3,7 @@ const database = require('../../database');
 const kursusedService = {};
 
 // Tagastab kõik kursused
-kursusedService.getKursus = () => {
+kursusedService.getKursused = () => {
   const { kursused } = database;
   return kursused;
 };
@@ -26,6 +26,16 @@ kursusedService.createKursus = (newKursus) => {
   };
   database.kursused.push(kursus);
   return id;
+};
+
+// Muudab kursuse descriptioni
+kursusedService.changeKursus = (kursus) => {
+  const index = database.kursused.findIndex((element) => element.id === kursus.id);
+  if (kursus.description) {
+    database.kursused[index].description = kursus.description;
+  }
+  
+  return true;
 };
 
 // Kustutab kursuse

@@ -9,6 +9,7 @@ const router = express.Router();
 router.get('/', ainedController.getAined);
 router.get('/:id', ainedController.getAineById);
 router.post('/', ainedController.createAine);
+router.patch('/:id', ainedController.changeAine);
 router.delete('/:id', ainedController.deleteAine);
 
 module.exports = router;

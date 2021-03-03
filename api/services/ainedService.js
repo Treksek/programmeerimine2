@@ -18,6 +18,7 @@ ainedService.getAineById = (id) => {
 };
 
 // Loob uue aine
+
 ainedService.createAine = (newAine) => {
   const id = database.ained.length + 1;
   const aine = {
@@ -28,6 +29,15 @@ ainedService.createAine = (newAine) => {
   return id;
 };
 
+// Muudab aine descriptioni
+ainedService.changeAine = (aine) => {
+  const index = database.ained.findIndex((element) => element.id === aine.id);
+  if (aine.description) {
+    database.ained[index].description = aine.description;
+  }
+  
+  return true;
+};
 // Kustutab aine
 ainedService.deleteAine = (id) => {
   // Leiab aine id järgi

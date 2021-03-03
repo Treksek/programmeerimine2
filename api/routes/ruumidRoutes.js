@@ -9,6 +9,7 @@ const router = express.Router();
 router.get('/', ruumidController.getRuumid);
 router.get('/:id', ruumidController.getRuumById);
 router.post('/', ruumidController.createRuum);
+router.patch('/:id', ruumidController.changeRuum);
 router.delete('/:id', ruumidController.deleteRuum);
 
 module.exports = router;

@@ -2,35 +2,23 @@ const ainedService = require('../services/ainedService');
 const ainedController = {};
 
 
-/**
- * Get all ained
- * GET - /ained
- * Required values: none
- * Optional values: none
- * Success: status 200 - OK and list of ained
- */
+//Leia kõik ained
+
 ainedController.getAined = (req, res) => {
   const ained = ainedService.getAined();
   res.status(200).json({
-    ained : ained,
+    ained,
   });
 };
 
 
-/**
- * Get aine by aine id
- * GET - /ained/:id
- * Required values: id
- * Optional values: none
- * Success: status 200 - OK and aine with specified id
- * Error: status 400 - Bad Request and error message
- */
+//Leia ained ID järgi
 ainedController.getAineById = (req, res) => {
   const id = parseInt(req.params.id, 10);
   const aine = ainedService.getAineById(id);
   if (aine) {
     res.status(200).json({
-      aine: aine
+      aine,
     });
   } else {
     res.status(400).json({
@@ -40,48 +28,63 @@ ainedController.getAineById = (req, res) => {
 };
 
 
-/**
- * Create new aine
- * POST - /aine
- * Required values: id, description
- * Optional values: none
- * Success: status 201 - Created and id of created aine
- * Error: status 400 - Bad Request and error message
- */
+// Lisa uus aine
 ainedController.createAine = (req, res) => {
-    const description = req.body.description;
-    if (description) {
-      const aine = {
-        id: ained.length + 1,
-        description: description
-      };
-      const id = ainedService.createAine(aine);
+  const { description } = req.body;
+  if (description) {
+    const aine = {
+      description,
+    };
+    const id = ainedService.createAine(aine);
     res.status(201).json({
       id,
     });
+  } else {
+    res.status(400).json({
+      error: 'Aine nimetus puudub',
+    });
+  }
+};
+// Muuda ainet
+ainedController.changeAine = (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const { description } = req.body;
+  if (id && description) {
+    const aine = ainedService.getAineById(id);
+    if (aine) {
+      const aineToChange = {
+        id,
+        description,
+      };
+      const success = ainedService.changeAine(aineToChange);
+      if (success) {
+        res.status(200).json({
+          success: true,
+        });
+      } else {
+        res.status(500).json({
+          error: 'Midagi läks valesti',
+        });
+      }
     } else {
       res.status(400).json({
-        error: 'Puudub kirjeldus'
+        error: `Ei leitud ainet id-ga : ${id}`,
       });
     }
-  };
+  } else {
+    res.status(400).json({
+      error: 'Id või kirjeldus puudub',
+    });
+  }
+};
 
-
-
-/**
- * Delete aine
- * DELETE - /ained/:id
- * Required values: id
- * Optional values: none
- * Success: status 204 - No Content
- * Error: status 400 - Bad Request and error message
- */
+  
+//Kustuta aine
 
 
 ainedController.deleteAine = (req, res) => {
   const id = parseInt(req.params.id, 10);
-  // Check if aine exists
-  const aine = ainedService.getAineById(id);
+   const aine = ainedService.getAineById(id);
   if (aine) {
     const success = ainedService.deleteAine(id);
     if (success) {

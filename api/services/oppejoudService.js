@@ -27,6 +27,15 @@ oppejoudService.createOpetaja = (newOpetaja) => {
   database.oppejoud.push(opetaja);
   return id;
 };
+// Muudab õppejõu descriptioni
+oppejoudService.changeOpetaja = (opetaja) => {
+  const index = database.oppejoud.findIndex((element) => element.id === opetaja.id);
+  if (opetaja.description) {
+    database.oppejoud[index].description = opetaja.description;
+  }
+  
+  return true;
+};
 
 // Kustutab õppejõu
 oppejoudService.deleteOpetaja = (id) => {
