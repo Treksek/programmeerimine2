@@ -7,8 +7,8 @@ const router = express.Router();
 
 router.get('/', ruumidController.getRuumid);
 router.get('/:id', ruumidController.getRuumById);
-router.post('/',  ruumidController.createRuum);
-router.patch('/:id',  ruumidController.changeRuum);
-router.delete('/:id', isAdmin, ruumidController.deleteRuum);
+router.post('/', isLoggedIn, ruumidController.createRuum);
+router.patch('/:id', isLoggedIn, ruumidController.changeRuum);
+router.delete('/:id', isLoggedIn, isAdmin, ruumidController.deleteRuum);
 
 module.exports = router;

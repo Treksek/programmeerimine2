@@ -1,16 +1,16 @@
-const database = require('../../database');
+const db = require('../../db');
 
 const kursusedService = {};
 
 // Tagastab kõik kursused
-kursusedService.getKursused = () => {
-  const { kursused } = database;
+kursusedService.getKursused = async () => {
+  const kursused = await db.query('SELECT id, description FROM tunniplaanKursused WHERE deleted = 0');
   return kursused;
 };
 
 // Leiab kursuse id järgi. Tagastab, kas leidis või ei.
-kursusedService.getKursusById = (id) => {
-  const kursus = database.kursused.find((element) => element.id === id);
+kursusedService.getKursusById = async (id) => {
+  const kursus = await db.query('SELECT id, description FROM tunniplaanKursused WHERE id = ? AND deleted = 0', [id]);
   if (kursus) {
     return kursus;
   }
@@ -18,32 +18,29 @@ kursusedService.getKursusById = (id) => {
 };
 
 // Loob uue kursuse
-kursusedService.createKursus = (newKursus) => {
-  const id = database.kursused.length + 1;
-  const kursus = {
-    id,
-    ...newKursus,
-  };
-  database.kursused.push(kursus);
-  return id;
+kursusedService.createKursus = async (newKursus) => {
+  const kursus = await db.query('SELECT id FROM tunniplaanKursused WHERE description = ?', [newKursus.description]);
+    if (kursus != 0){
+  
+      return kursus[0].id;
+
+    } else {  
+      const result = await db.query('INSERT INTO tunniplaanKursused SET ?', [newKursus]);
+      return result.insertId;
+    }
 };
 
 // Muudab kursuse descriptioni
-kursusedService.changeKursus = (kursus) => {
-  const index = database.kursused.findIndex((element) => element.id === kursus.id);
-  if (kursus.description) {
-    database.kursused[index].description = kursus.description;
-  }
+kursusedService.changeKursus = async (kursus) => {
+  await db.query('UPDATE tunniplaanKursused SET description = ? WHERE id = ?', [kursus.description, kursus.id]);
+  
   
   return true;
 };
 
 // Kustutab kursuse
-kursusedService.deleteKursus = (id) => {
-  // Leiab kursuse id järgi
-  const index = database.kursused.findIndex((element) => element.id === id);
-  // eemaldab kursuse 'database' failist
-  database.kursused.splice(index, 1);
+kursusedService.deleteKursus = async (id) => {
+  await db.query('UPDATE tunniplaanKursused SET deleted = 1 WHERE id = ?', [id]);
   return true;
 };
 

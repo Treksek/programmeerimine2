@@ -4,8 +4,8 @@ const ainedController = {};
 
 //Leia kõik ained
 
-ainedController.getAined = (req, res) => {
-  const ained = ainedService.getAined();
+ainedController.getAined = async (req, res) => {
+  const ained = await ainedService.getAined();
   res.status(200).json({
     ained,
   });
@@ -13,9 +13,9 @@ ainedController.getAined = (req, res) => {
 
 
 //Leia ained ID järgi
-ainedController.getAineById = (req, res) => {
+ainedController.getAineById = async (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const aine = ainedService.getAineById(id);
+  const aine = await ainedService.getAineById(id);
   if (aine) {
     res.status(200).json({
       aine,
@@ -29,13 +29,16 @@ ainedController.getAineById = (req, res) => {
 
 
 // Lisa uus aine
-ainedController.createAine = (req, res) => {
-  const { description } = req.body;
-  if (description) {
+ainedController.createAine = async (req, res) => {
+  const {description, oppejoudID, ruumID, kursusID } = req.body;
+  if (description && oppejoudID && ruumID && kursusID) {
     const aine = {
       description,
+      oppejoudID,
+      ruumID,
+      kursusID
     };
-    const id = ainedService.createAine(aine);
+    const id = await ainedService.createAine(aine);
     res.status(201).json({
       id,
     });
@@ -46,17 +49,20 @@ ainedController.createAine = (req, res) => {
   }
 };
 // Muuda ainet
-ainedController.changeAine = (req, res) => {
+ainedController.changeAine = async (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const { description } = req.body;
-  if (id && description) {
-    const aine = ainedService.getAineById(id);
+  const { description, oppejoudID, ruumID, kursusID } = req.body;
+  if (id && (description || oppejoudID || ruumID || kursusID)) {
+    const aine = await ainedService.getAineById(id);
     if (aine) {
       const aineToChange = {
         id,
         description,
+        oppejoudID,
+        ruumID,
+        kursusID
       };
-      const success = ainedService.changeAine(aineToChange);
+      const success = await ainedService.changeAine(aineToChange);
       if (success) {
         res.status(200).json({
           success: true,
@@ -82,11 +88,11 @@ ainedController.changeAine = (req, res) => {
 //Kustuta aine
 
 
-ainedController.deleteAine = (req, res) => {
+ainedController.deleteAine = async  (req, res) => {
   const id = parseInt(req.params.id, 10);
-   const aine = ainedService.getAineById(id);
+   const aine = await ainedService.getAineById(id);
   if (aine) {
-    const success = ainedService.deleteAine(id);
+    const success = await ainedService.deleteAine(id);
     if (success) {
       res.status(204).end();
     } else {

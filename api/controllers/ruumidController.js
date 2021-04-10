@@ -2,8 +2,8 @@ const ruumidService = require('../services/ruumidService');
 const ruumidController = {};
 
 
-ruumidController.getRuumid = (req, res) => {
-  const ruumid = ruumidService.getRuumid();
+ruumidController.getRuumid = async (req, res) => {
+  const ruumid = await ruumidService.getRuumid();
   res.status(200).json({
     ruumid : ruumid,
   });
@@ -11,9 +11,9 @@ ruumidController.getRuumid = (req, res) => {
 
 
 
-ruumidController.getRuumById = (req, res) => {
+ruumidController.getRuumById = async (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const ruum = ruumidService.getRuumById(id);
+  const ruum = await ruumidService.getRuumById(id);
   if (ruum) {
     res.status(200).json({
       ruum: ruum
@@ -27,13 +27,13 @@ ruumidController.getRuumById = (req, res) => {
 
 
 
-ruumidController.createRuum = (req, res) => {
+ruumidController.createRuum = async (req, res) => {
   const { description } = req.body;
   if (description) {
     const ruum = {
       description,
     };
-    const id = ruumidService.createRuum(ruum);
+    const id = await ruumidService.createRuum(ruum);
     res.status(201).json({
       id,
     });
@@ -44,17 +44,17 @@ ruumidController.createRuum = (req, res) => {
   }
 };
 
-  ruumidController.changeRuum = (req, res) => {
+  ruumidController.changeRuum = async (req, res) => {
     const id = parseInt(req.params.id, 10);
     const { description } = req.body;
     if (id && description) {
-      const ruum = ruumidService.getRuumById(id);
+      const ruum = await ruumidService.getRuumById(id);
       if (ruum) {
         const ruumToChange = {
           id,
           description,
         };
-        const success = ruumidService.changeRuum(ruumToChange);
+        const success = await ruumidService.changeRuum(ruumToChange);
         if (success) {
           res.status(200).json({
             success: true,
@@ -80,11 +80,11 @@ ruumidController.createRuum = (req, res) => {
 
 
 
-  ruumidController.deleteRuum = (req, res) => {
+  ruumidController.deleteRuum = async (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const ruum = ruumidService.getRuumById(id);
+  const ruum = await ruumidService.getRuumById(id);
   if (ruum) {
-    const success = ruumidService.deleteRuum(id);
+    const success = await ruumidService.deleteRuum(id);
     if (success) {
       res.status(204).end();
     } else {

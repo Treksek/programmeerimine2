@@ -59,18 +59,18 @@ ruumid: [
 users: [
     {
       id: 1,
-      firstName: 'Minna',
-      lastName: 'Maasikas',
-      email: 'minnake@tlu.ee',
-      password: 'MaasikaMinna',
+      firstName: 'Minni',
+      lastName: 'Maalikas',
+      email: 'minnike@tlu.ee',
+      password: '$2b$10$7uypJL9kmGsZPRb5PROjWei01w5vqxM86cDCVECkHnckoiU6oxAH6', //'MaalikaMinni'
       role: 'User',
     },
     {
       id: 2,
-      firstName: 'Kati',
-      lastName: 'Kadastik',
-      email: 'katkat@tlu.ee',
-      password: 'KassKatusel',
+      firstName: 'Katrin',
+      lastName: 'Kadalipp',
+      email: 'katkad@tlu.ee',
+      password: '$2b$10$xu/Kqeurij9hn.5B7qM4KeXU73I6.VN6zRvigWnNeoapvUpR9N0qS', // 'KassKatusel',
       role: 'User',
     },
     {
@@ -78,8 +78,8 @@ users: [
       firstName: 'Aadu',
       lastName: 'Ohakas',
       email: 'ahikas@tlu.ee',
-      password: 'A1B2C3D4',
-      role: 'Admin',
+      password: '$2b$10$yxHuiPIPG/026tpmWPXcOOCJ1hQSc5SHteNJq8jFnGd3L07B610xi', // 'A1B2C3D4',
+      role: 'admin',
     },
   ],
 };

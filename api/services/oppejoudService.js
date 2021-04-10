@@ -1,16 +1,16 @@
-const database = require('../../database');
+const db = require('../../db');
 
 const oppejoudService = {};
 
 // Tagastab kõik õppejõud
-oppejoudService.getOppejoud = () => {
-  const { oppejoud } = database;
+oppejoudService.getOppejoud = async () => {
+  const oppejoud = await db.query('SELECT id, description FROM tunniplaanOppejoud WHERE deleted = 0');
   return oppejoud;
 };
 
 // Leiab oppejou id järgi. Tagastab, kas leidis või ei.
-oppejoudService.getOpetajaById = (id) => {
-  const opetaja = database.oppejoud.find((element) => element.id === id);
+oppejoudService.getOpetajaById = async (id) => {
+  const opetaja = await db.query('SELECT id, description FROM tunniplaanOppejoud WHERE id = ? AND deleted = 0', [id]);
   if (opetaja) {
     return opetaja;
   }
@@ -18,31 +18,28 @@ oppejoudService.getOpetajaById = (id) => {
 };
 
 // Loob uue õppejõu
-oppejoudService.createOpetaja = (newOpetaja) => {
-  const id = database.oppejoud.length + 1;
-  const opetaja = {
-    id,
-    ...newOpetaja,
-  };
-  database.oppejoud.push(opetaja);
-  return id;
+oppejoudService.createOpetaja = async (newOpetaja) => {
+  const opetaja = await db.query('SELECT id FROM tunniplaanOppejoud WHERE description = ?', [newOpetaja.description]);
+    if (opetaja != 0){
+  
+      return opetaja[0].id;
+
+    } else {  
+      const result = await db.query('INSERT INTO tunniplaanOppejoud SET ?', [newOpetaja]);
+      return result.insertId;
+    }
 };
+
 // Muudab õppejõu descriptioni
-oppejoudService.changeOpetaja = (opetaja) => {
-  const index = database.oppejoud.findIndex((element) => element.id === opetaja.id);
-  if (opetaja.description) {
-    database.oppejoud[index].description = opetaja.description;
-  }
+oppejoudService.changeOpetaja = async (opetaja) => {
+  await db.query('UPDATE tunniplaanOppejoud SET description = ? WHERE id = ?', [opetaja.description, opetaja.id]);
   
   return true;
 };
 
 // Kustutab õppejõu
-oppejoudService.deleteOpetaja = (id) => {
-  // Leiab õppejõu id järgi
-  const index = database.oppejoud.findIndex((element) => element.id === id);
-  // eemaldab üppejõu 'database' failist
-  database.oppejoud.splice(index, 1);
+oppejoudService.deleteOpetaja = async (id) => {
+  await db.query('UPDATE tunniplaanOppejoud SET deleted = 1 WHERE id = ?', [id]);
   return true;
 };
 

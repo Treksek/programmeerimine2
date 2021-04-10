@@ -2,8 +2,8 @@ const oppejoudService = require('../services/oppejoudService');
 const oppejoudController = {};
 
 
-oppejoudController.getOppejoud = (req, res) => {
-  const oppejoud = oppejoudService.getOppejoud();
+oppejoudController.getOppejoud = async (req, res) => {
+  const oppejoud = await oppejoudService.getOppejoud();
   res.status(200).json({
     oppejoud : oppejoud,
   });
@@ -11,9 +11,9 @@ oppejoudController.getOppejoud = (req, res) => {
 
 
 
-oppejoudController.getOpetajaById = (req, res) => {
+oppejoudController.getOpetajaById = async (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const opetaja = oppejoudService.getOpetajaById(id);
+  const opetaja = await oppejoudService.getOpetajaById(id);
   if (opetaja) {
     res.status(200).json({
         opetaja: opetaja
@@ -27,13 +27,13 @@ oppejoudController.getOpetajaById = (req, res) => {
 
 
 
-oppejoudController.createOpetaja = (req, res) => {
+oppejoudController.createOpetaja = async (req, res) => {
   const { description } = req.body;
   if (description) {
     const opetaja = {
       description,
     };
-    const id = oppejoudService.createOpetaja(opetaja);
+    const id = await oppejoudService.createOpetaja(opetaja);
     res.status(201).json({
       id,
     });
@@ -44,17 +44,17 @@ oppejoudController.createOpetaja = (req, res) => {
   }
 };
 
-  oppejoudController.changeOpetaja = (req, res) => {
+  oppejoudController.changeOpetaja = async (req, res) => {
     const id = parseInt(req.params.id, 10);
     const { description } = req.body;
     if (id && description) {
-      const opetaja = oppejoudService.getOpetajaById(id);
+      const opetaja = await oppejoudService.getOpetajaById(id);
       if (opetaja) {
         const opetajaToChange = {
           id,
           description,
         };
-        const success = oppejoudService.changeOpetaja(opetajaToChange);
+        const success = await oppejoudService.changeOpetaja(opetajaToChange);
         if (success) {
           res.status(200).json({
             success: true,
@@ -80,11 +80,11 @@ oppejoudController.createOpetaja = (req, res) => {
 
 
 
-  oppejoudController.deleteOpetaja = (req, res) => {
+  oppejoudController.deleteOpetaja = async (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const opetaja = oppejoudService.getOpetajaById(id);
+  const opetaja = await oppejoudService.getOpetajaById(id);
   if (opetaja) {
-    const success = oppejoudService.deleteOpetaja(id);
+    const success = await oppejoudService.deleteOpetaja(id);
     if (success) {
       res.status(204).end();
     } else {

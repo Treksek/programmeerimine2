@@ -2,8 +2,8 @@ const kursusedService = require('../services/kursusedService');
 const kursusedController = {};
 
 
-kursusedController.getKursused = (req, res) => {
-  const kursused = kursusedService.getKursused();
+kursusedController.getKursused = async(req, res) => {
+  const kursused = await kursusedService.getKursused();
   res.status(200).json({
     kursused : kursused,
   });
@@ -11,9 +11,9 @@ kursusedController.getKursused = (req, res) => {
 
 
 
-kursusedController.getKursusById = (req, res) => {
+kursusedController.getKursusById = async (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const kursus = kursusedService.getKursusById(id);
+  const kursus = await kursusedService.getKursusById(id);
   if (kursus) {
     res.status(200).json({
       kursus: kursus
@@ -24,13 +24,13 @@ kursusedController.getKursusById = (req, res) => {
     });
   }
 };
-kursusedController.createKursus = (req, res) => {
+kursusedController.createKursus = async (req, res) => {
   const { description } = req.body;
   if (description) {
     const kursus = {
       description,
     };
-    const id = kursusedService.createKursus(kursus);
+    const id = await kursusedService.createKursus(kursus);
     res.status(201).json({
       id,
     });
@@ -43,17 +43,17 @@ kursusedController.createKursus = (req, res) => {
 
 
 
-  kursusedController.changeKursus = (req, res) => {
+  kursusedController.changeKursus = async (req, res) => {
     const id = parseInt(req.params.id, 10);
     const { description } = req.body;
     if (id && description) {
-      const kursus = kursusedService.getKursusById(id);
+      const kursus = await kursusedService.getKursusById(id);
       if (kursus) {
         const kursusToChange = {
           id,
           description,
         };
-        const success = kursusedService.changeKursus(kursusToChange);
+        const success = await kursusedService.changeKursus(kursusToChange);
         if (success) {
           res.status(200).json({
             success: true,
@@ -77,11 +77,11 @@ kursusedController.createKursus = (req, res) => {
 
 
 
-  kursusedController.deleteKursus = (req, res) => {
+  kursusedController.deleteKursus = async (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const kursus = kursusedService.getKursusById(id);
+  const kursus = await kursusedService.getKursusById(id);
   if (kursus) {
-    const success = kursusedService.deleteKursus(id);
+    const success = await kursusedService.deleteKursus(id);
     if (success) {
       res.status(204).end();
     } else {
