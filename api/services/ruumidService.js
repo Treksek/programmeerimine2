@@ -11,11 +11,11 @@ const ruumidService = {};
 // Leiab ruumi id järgi. Tagastab, kas leidis või ei.
   ruumidService.getRuumById = async (id) => {
   const ruum = await db.query('SELECT id, description FROM tunniplaanRuumid WHERE id = ? AND deleted = 0', [id]);
-  if (ruum) {
-    return ruum;
-  }
-  return false;
+  if (!ruum[0]) return false;
+
+  return ruum[0];
 };
+
 
 // Loob uue ruumi
 ruumidService.createRuum = async (newRuum) => {
