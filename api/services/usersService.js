@@ -14,8 +14,9 @@ usersService.getUsers = async () => {
 // Find user by id. Returns user if found or false.
 usersService.getUserById = async (id) => {
   const user = await db.query('SELECT id, firstName, lastName, email, role FROM tunniplaanUsers WHERE id = ? AND deleted = 0', [id]);
-  if (!user) return false;
-  return user;
+  if (!user[0]) return false;
+  return user[0];
+  
 };
 
 // Creates new user, returns id on new user
@@ -66,7 +67,7 @@ usersService.updateUser = async (user) => {
 
 // Find user by email. Returns user if found or undefined
 usersService.getUserByEmail = async (email) => {
-  const user = await db.query('SELECT * FROM tunniplaanUsers WHERE email = ? AND deleted = 0', [email]);
+  const user = await db.query('SELECT id, email, password, role FROM tunniplaanUsers WHERE email = ? AND deleted = 0', [email]);
   return user[0];
 };
 
@@ -82,3 +83,4 @@ usersService.login = async (login) => {
 };
 
 module.exports = usersService;
+
