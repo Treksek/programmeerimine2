@@ -11,10 +11,9 @@ oppejoudService.getOppejoud = async () => {
 // Leiab oppejou id järgi. Tagastab, kas leidis või ei.
 oppejoudService.getOpetajaById = async (id) => {
   const opetaja = await db.query('SELECT id, description FROM tunniplaanOppejoud WHERE id = ? AND deleted = 0', [id]);
-  if (opetaja) {
-    return opetaja;
-  }
-  return false;
+  if (!opetaja[0]) return false;
+  
+  return opetaja[0];
 };
 
 // Loob uue õppejõu
