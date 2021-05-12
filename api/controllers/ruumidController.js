@@ -14,15 +14,15 @@ ruumidController.getRuumid = async (req, res) => {
 ruumidController.getRuumById = async (req, res) => {
   const id = parseInt(req.params.id, 10);
   const ruum = await ruumidService.getRuumById(id);
-  if (ruum) {
-    res.status(200).json({
-      ruum: ruum
-    });
-  } else {
-    res.status(400).json({
+  if (!ruum) {
+    return res.status(400).json({
       error: `Ei leitud ruumi id-ga: ${id}`,
     });
-  }
+  } 
+    return res.status(200).json({
+     ruum,
+    });
+  
 };
 
 
