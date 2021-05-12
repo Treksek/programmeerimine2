@@ -25,6 +25,7 @@ app.use('/ruumid', ruumidRoutes);
 app.use('/users', usersRoutes);*/
 
 
+
 // Start listening
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
