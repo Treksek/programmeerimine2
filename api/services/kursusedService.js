@@ -11,11 +11,11 @@ kursusedService.getKursused = async () => {
 // Leiab kursuse id järgi. Tagastab, kas leidis või ei.
 kursusedService.getKursusById = async (id) => {
   const kursus = await db.query('SELECT id, description FROM tunniplaanKursused WHERE id = ? AND deleted = 0', [id]);
-  if (kursus) {
-    return kursus;
-  }
-  return false;
+  if (!kursus[0]) return false;
+  return kursus[0];
 };
+
+
 
 // Loob uue kursuse
 kursusedService.createKursus = async (newKursus) => {
