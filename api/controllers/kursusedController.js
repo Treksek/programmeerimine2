@@ -14,16 +14,18 @@ kursusedController.getKursused = async(req, res) => {
 kursusedController.getKursusById = async (req, res) => {
   const id = parseInt(req.params.id, 10);
   const kursus = await kursusedService.getKursusById(id);
-  if (kursus) {
-    res.status(200).json({
-      kursus: kursus
-    });
-  } else {
-    res.status(400).json({
+  if (!kursus) {
+    return res.status(400).json({
       error: `Ei leitud kursust id-ga: ${id}`,
     });
-  }
+  } 
+    return res.status(200).json({
+      kursus,
+    });
+  
 };
+
+
 kursusedController.createKursus = async (req, res) => {
   const { description } = req.body;
   if (description) {
