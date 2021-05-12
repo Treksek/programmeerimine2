@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', ruumidController.getRuumid);
 router.get('/:id', ruumidController.getRuumById);
-router.post('/', isLoggedIn, ruumidController.createRuum);
+router.post('/', ruumidController.createRuum);
 router.patch('/:id', isLoggedIn, ruumidController.changeRuum);
 router.delete('/:id', isLoggedIn, isAdmin, ruumidController.deleteRuum);
 
