@@ -28,11 +28,11 @@ ainedService.getAineById = async (id) => {
      INNER JOIN tunniplaanKursused k ON a.kursusID = k.id
      WHERE
      a.id = ? AND a.deleted = 0`, [id]);
-  if (aine) {
-    return aine;
-  }
-  return false;
+  if (!aine[0]) return false;
+  
+  return aine[0];
 };
+
 
 // Loob uue aine
 
@@ -47,10 +47,11 @@ ainedService.createAine = async (newAine) => {
     description: newAine.description,
     oppejoudID: newAine.oppejoudID,
     ruumID: newAine.ruumID,
-    kursusID: newAine.kursusID
+    kursusID: newAine.kursusID,
   };
+  
   const result = await db.query('INSERT INTO tunniplaanAined SET ?', [aine]);
-  return { id: result.insertId };
+  return  result.insertId ;
 };
 
 
