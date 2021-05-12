@@ -14,17 +14,16 @@ oppejoudController.getOppejoud = async (req, res) => {
 oppejoudController.getOpetajaById = async (req, res) => {
   const id = parseInt(req.params.id, 10);
   const opetaja = await oppejoudService.getOpetajaById(id);
-  if (opetaja) {
-    res.status(200).json({
-        opetaja: opetaja
-    });
-  } else {
-    res.status(400).json({
+  if (!opetaja) {
+    return res.status(400).json({
       error: `Ei leitud oppejoudu id-ga: ${id}`,
     });
-  }
+  } 
+    return res.status(200).json({
+        opetaja,
+      });
+   
 };
-
 
 
 oppejoudController.createOpetaja = async (req, res) => {
